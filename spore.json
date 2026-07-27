@@ -6,6 +6,7 @@
     "knobs.html",
     "knobs.js",
     "knobs.json",
+    "knobs.py",
     "list-directories.php",
     "list-files.php",
     "load-file.php",

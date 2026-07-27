@@ -1,29 +1,24 @@
-knobs = [
-    {
-        "x":-0.9,
-        "y":0,
-        "r":0.3,
-        "variable":"a",
-        "value":0
-    },{
-        "x":0,
-        "y":0,
-        "r":0.3,
-        "variable":"b",
-        "value":0
-    },{
-        "x":0.9,
-        "y":0,
-        "r":0.3,
-        "variable":"c",
-        "value":0
-    }
-];
+
+const debug_mode = true;//set to false to send data over socket
+let socket = null;
+
+if (!debug_mode) {
+  socket = new WebSocket('ws://localhost:8080');
+}
+
+knobs = [];
 
 knobPayload = {};
-for(let index = 0;index < knobs.length;index++){
-    knobPayload[knobs[index].variable] = knobs[index].value;
-}
+
+fetch('load-file.php?filename=knobs.json')
+  .then(response => response.text())
+  .then(data => {
+    knobs = JSON.parse(data.trim());
+    for(let index = 0;index < knobs.length;index++){
+        knobPayload[knobs[index].variable] = knobs[index].value;
+    }
+     
+});
 
 knobIndex = -1;
 
@@ -61,7 +56,7 @@ function draw() {
         fill(0);
         strokeWeight(1);
         textSize(32);
-        text(knobs[index].variable + " = " + knobs[index].value.toString(),x0 + unit*knobs[index].x - 0.2*unit*knobs[index].r,y0 - unit*knobs[index].y - knobs[index].r*unit - 10);
+        text(knobs[index].variable + " = " + knobs[index].value.toString(),x0 + unit*knobs[index].x - 0.27*unit*knobs[index].r,y0 - unit*knobs[index].y - knobs[index].r*unit - 10);
         if(knobIndex >= 0){
             cursor(HAND);
         } else{
@@ -78,11 +73,17 @@ function mouseWheel(event) {
         else{
             knobs[knobIndex].value--;
         }
-        if(knobs[knobIndex].value < 0){
-            knobs[knobIndex].value = 23;
-        }
-        knobs[knobIndex].value = knobs[knobIndex].value%24;
+
         knobPayload[knobs[knobIndex].variable] = knobs[knobIndex].value;
         console.log(JSON.stringify(knobPayload));
+        sendData(knobPayload);
     }
+}
+
+function sendData(instrumentData) {
+  if (!debug_mode && socket) {
+    socket.send(JSON.stringify(instrumentData));
+  } else {
+    console.log("Debug Mode (No Socket Connection):", instrumentData);
+  }
 }
