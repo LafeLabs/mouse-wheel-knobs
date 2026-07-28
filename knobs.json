@@ -4,18 +4,21 @@
         "y":0,
         "r":0.3,
         "variable":"a",
-        "value":0
+        "value":0,
+        "N":24
     },{
         "x":0,
         "y":0,
         "r":0.3,
         "variable":"b",
-        "value":0
+        "value":0,
+        "N":24
     },{
         "x":0.9,
         "y":0,
         "r":0.3,
         "variable":"c",
-        "value":0
+        "value":0,
+        "N":24
     }
 ]

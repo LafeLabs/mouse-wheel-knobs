@@ -52,11 +52,14 @@ function draw() {
         }
         circle(x0 + unit*knobs[index].x,y0 - unit*knobs[index].y,2*unit*knobs[index].r);
         
-        line(x0 + unit*knobs[index].x,y0 - unit*knobs[index].y,x0 + unit*knobs[index].x + knobs[index].r*unit*Math.sin(knobs[index].value*Math.PI/12),y0 - unit*knobs[index].y - knobs[index].r*unit*Math.cos(knobs[index].value*Math.PI/12));
+        line(x0 + unit*knobs[index].x,y0 - unit*knobs[index].y,x0 + unit*knobs[index].x + knobs[index].r*unit*Math.sin(knobs[index].value*2*Math.PI/knobs[index].N),y0 - unit*knobs[index].y - knobs[index].r*unit*Math.cos(knobs[index].value*2*Math.PI/knobs[index].N));
         fill(0);
         strokeWeight(1);
         textSize(32);
-        text(knobs[index].variable + " = " + knobs[index].value.toString(),x0 + unit*knobs[index].x - 0.27*unit*knobs[index].r,y0 - unit*knobs[index].y - knobs[index].r*unit - 10);
+        textString = knobs[index].variable + " = " + knobs[index].value.toString();
+          textFont('Courier New');
+
+        text(textString,x0 + unit*knobs[index].x - 32*0.295*textString.length,y0 - unit*knobs[index].y - knobs[index].r*unit - 10);
         if(knobIndex >= 0){
             cursor(HAND);
         } else{
